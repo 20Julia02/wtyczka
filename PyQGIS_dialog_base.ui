@@ -16,14 +16,14 @@
   <widget class="QTabWidget" name="zakladki">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>10</y>
-     <width>541</width>
+     <width>561</width>
      <height>431</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab_height_area">
     <attribute name="title">
@@ -41,7 +41,7 @@
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -64,7 +64,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>190</y>
+       <y>170</y>
        <width>95</width>
        <height>20</height>
       </rect>
@@ -72,7 +72,7 @@
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>12</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="text">
@@ -86,7 +86,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>160</y>
+       <y>140</y>
        <width>95</width>
        <height>20</height>
       </rect>
@@ -94,7 +94,7 @@
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>12</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="autoFillBackground">
@@ -110,8 +110,8 @@
     <widget class="QPushButton" name="calculate_Button">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>300</y>
+       <x>440</x>
+       <y>310</y>
        <width>93</width>
        <height>28</height>
       </rect>
@@ -125,14 +125,14 @@
       <rect>
        <x>170</x>
        <y>230</y>
-       <width>161</width>
+       <width>81</width>
        <height>41</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>13</pointsize>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -145,7 +145,7 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>120</y>
+       <y>100</y>
        <width>321</width>
        <height>31</height>
       </rect>
@@ -153,7 +153,7 @@
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>13</pointsize>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -204,7 +204,7 @@
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>13</pointsize>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -239,19 +239,70 @@
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>220</y>
-       <width>121</width>
+       <y>200</y>
+       <width>161</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>12</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="text">
       <string>Draw poligon</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_jednostki">
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>270</y>
+       <width>51</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>m2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>a</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ha</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="pushButton_clear">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>270</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_test">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>50</y>
+       <width>121</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
      </property>
     </widget>
    </widget>
@@ -271,13 +322,13 @@
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>13</pointsize>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
      <property name="text">
-      <string>Choose file coordinate system:</string>
+      <string>Choose file's coordinate system:</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="radioButton_2000">
@@ -340,6 +391,7 @@
      <property name="font">
       <font>
        <family>Arial</family>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -378,7 +430,7 @@
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>12</pointsize>
+       <pointsize>11</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
