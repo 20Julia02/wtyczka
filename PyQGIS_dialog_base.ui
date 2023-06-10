@@ -292,19 +292,6 @@
       <string>Clear</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_test">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>50</y>
-       <width>121</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="tab_loadfile">
     <attribute name="title">
