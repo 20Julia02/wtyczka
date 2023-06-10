@@ -89,9 +89,11 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
 
             height_difference = abs(list_with_height[1] - list_with_height[0])
             self.result_label.setText(str(height_difference))
+            self.errors_label.setText("")
             self.display_message(f"Różnica wysokości między punktami o numerach {features_id[0]},{features_id[1]} wynosi: {height_difference} [m]")
         else:
-            self.result_label.setText("Wybrano błędną ilość punktów")
+            self.errors_label.setText("The selected number of points is incorrect. You should choose 2 points.")
+            self.result_label.setText("")
             
     def get_area_between_points(self):
         layer_area = self.layer_MapLayer.currentLayer()
@@ -126,15 +128,18 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             final_area = abs(sum(results) / 2)
             result_area = f"{final_area:.3f} m2"
             self.result_label.setText(str(result_area))
+            self.errors_label.setText("")
+            self.final_area = final_area
             self.display_message(f"Pole powierzchni figury o wierzchołkach w punktach o numerach: {area_features_id} wynosi: {final_area} [m^2]")
         else:
-            error = "Zaznacz przynajmniej trzy punkty."
-            self.result_label.setText(str(error))
-        self.final_area = final_area
+            error = "The selected number of points is incorrect. You should choose more than 2 points. "
+            self.errors_label.setText(str(error))
+            self.result_label.setText("")
+
     def creating_polygon(self):
         layer = self.layer_MapLayer.currentLayer()
         selected_features2 = layer.selectedFeatures()
-
+        
         if len(selected_features2) >= 3:
             list_xy_coordinates_poli = []
 
