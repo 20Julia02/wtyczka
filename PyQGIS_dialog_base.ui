@@ -34,14 +34,14 @@
       <rect>
        <x>20</x>
        <y>0</y>
-       <width>131</width>
+       <width>301</width>
        <height>51</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial Black</family>
-       <pointsize>14</pointsize>
+       <pointsize>13</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -113,14 +113,14 @@
       <rect>
        <x>170</x>
        <y>230</y>
-       <width>81</width>
+       <width>161</width>
        <height>41</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial Black</family>
-       <pointsize>14</pointsize>
+       <pointsize>13</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -134,14 +134,14 @@
       <rect>
        <x>20</x>
        <y>120</y>
-       <width>111</width>
+       <width>321</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial Black</family>
-       <pointsize>14</pointsize>
+       <pointsize>13</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -176,6 +176,9 @@
      <property name="scaledContents">
       <bool>false</bool>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
     <widget class="QLabel" name="error_napis">
      <property name="geometry">
@@ -189,7 +192,7 @@
      <property name="font">
       <font>
        <family>Arial Black</family>
-       <pointsize>14</pointsize>
+       <pointsize>13</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -213,7 +216,7 @@
     </widget>
     <widget class="QCheckBox" name="checkBox_poligon">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
