@@ -85,7 +85,7 @@ class Ui_PyQGISDialogBase(object):
         self.errors_label.setGeometry(QtCore.QRect(29, 349, 481, 41))
         self.errors_label.setObjectName("errors_label")
         self.checkBox_poligon = QtWidgets.QCheckBox(self.tab_height_area)
-        self.checkBox_poligon.setEnabled(False)
+        self.checkBox_poligon.setEnabled(True)
         self.checkBox_poligon.setGeometry(QtCore.QRect(40, 220, 121, 20))
         self.checkBox_poligon.setObjectName("checkBox_poligon")
         self.zakladki.addTab(self.tab_height_area, "")
