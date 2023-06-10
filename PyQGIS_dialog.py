@@ -31,9 +31,8 @@ from qgis.PyQt.QtCore import QVariant
 from qgis.utils import iface
 from qgis.gui import QgsMapCanvas
 from qgis.core import Qgis
-import numpy as np
-from scipy.spatial import Delaunay
 from PyQt5.QtWidgets import QButtonGroup
+from qgis.core import QgsField, QgsFields
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -44,7 +43,9 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
     def __init__(self, parent=None):
         super(PyQGISDialog, self).__init__(parent)
         self.setupUi(self)
-        
+
+        final_area = None
+
         self.button_group = QtWidgets.QButtonGroup()
         self.button_group.addButton(self.height_radioButton)
         self.button_group.addButton(self.area_radioButton)
@@ -129,7 +130,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         else:
             error = "Zaznacz przynajmniej trzy punkty."
             self.result_label.setText(str(error))
-
+        self.final_area = final_area
     def creating_polygon(self):
         layer = self.layer_MapLayer.currentLayer()
         selected_features2 = layer.selectedFeatures()
@@ -150,12 +151,17 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             layer1 = QgsVectorLayer("Polygon?crs=" + crs, "Polygon", "memory")
             provider = layer1.dataProvider()
 
+            # Dodaj atrybut 'area' do definicji pól warstwy
+            provider.addAttributes([QgsField('area', QVariant.Double)])
+
+            layer1.updateFields()  # Zaktualizuj pola warstwy
+
             feature = QgsFeature()
             feature.setGeometry(polygon_geometry)
-            feature.setAttributes([QVariant(1)])
+            feature.setAttributes([self.final_area])  # Ustaw wartość atrybutu 'area'
 
-            provider.addFeatures([feature])
-            layer.updateExtents()
+            provider.addFeature(feature)  # Dodaj obiekt feature do warstwy
+            layer1.updateExtents()
 
             QgsProject.instance().addMapLayer(layer1)
 
