@@ -80,6 +80,8 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             self.checkBox_poligon.setHidden(True) 
             self.checkBox_poligon.setChecked(False)
             self.comboBox_jednostki.setHidden(True)
+            self.result_label.setText("")
+            
 
     def on_radio_button_area_toggled(self):
         if self.area_radioButton.isChecked():
@@ -87,6 +89,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             self.checkBox_poligon.setEnabled(True)
             self.checkBox_poligon.setHidden(False)
             self.comboBox_jednostki.setHidden(False)
+            self.result_label.setText("")
 
     def on_calculate_button_clicked(self):
         if self.height_radioButton.isChecked():
@@ -111,7 +114,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
                 list_with_height.append(attribute_value)
 
             height_difference = abs(list_with_height[1] - list_with_height[0])
-            self.result_label.setText(str(height_difference))
+            self.result_label.setText(str(height_difference)+" m")
             self.errors_label.setText("")
             self.display_message(f"Różnica wysokości między punktami o numerach {features_id[0]},{features_id[1]} wynosi: {height_difference} [m]")
         else:
