@@ -23,16 +23,15 @@
 """
 
 import os
+from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import Qt
-from qgis.PyQt import uic
-from qgis.PyQt import QtWidgets
-from qgis.core import QgsFeature, QgsGeometry, QgsVectorLayer, QgsProject, QgsPointXY
+from qgis.PyQt import uic, QtWidgets
+from qgis.core import Qgis, QgsFeature, QgsGeometry, QgsVectorLayer, QgsProject, QgsPointXY, QgsField, QgsFields, QgsMapLayerModel
 from qgis.PyQt.QtCore import QVariant
 from qgis.utils import iface
 from qgis.gui import QgsMapCanvas
-from qgis.core import Qgis
 from PyQt5.QtWidgets import QButtonGroup
-from qgis.core import QgsField, QgsFields
+
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -46,36 +45,60 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
 
         final_area = None
 
+        filters = ['Pliki tekstowe (*.txt)', 'Pliki CSV (*.csv)']
+        filter_string = ';;'.join(filters)
+        self.sciezka.setFilter(filter_string)
+
+        self.checkBox_poligon.setHidden(True)
+        self.groupBox_choose_zone.setHidden(True)
+        
         self.button_group = QtWidgets.QButtonGroup()
         self.button_group.addButton(self.height_radioButton)
         self.button_group.addButton(self.area_radioButton)
+        self.comboBox_jednostki.setHidden(True)
+
+        self.buttonbox_group = QButtonGroup()
+        self.buttonbox_group.addButton(self.checkBox_zone_5)
+        self.buttonbox_group.addButton(self.checkBox_zone_6)
+        self.buttonbox_group.addButton(self.checkBox_zone_7)
+        self.buttonbox_group.addButton(self.checkBox_zone_8)
 
         self.height_radioButton.toggled.connect(self.on_radio_button_height_toggled)
         self.area_radioButton.toggled.connect(self.on_radio_button_area_toggled)
         self.calculate_Button.clicked.connect(self.on_calculate_button_clicked)
-        
+        self.pushButton_add_layer.clicked.connect(self.add_layer_with_coordinates_from_file)
+        self.radioButton_2000.toggled.connect(self.setHiddenFalse)
+        self.radioButton_1992.toggled.connect(self.setHiddenTrue)
+        self.pushButton_clear.clicked.connect(self.claer)
+
     def display_message(self, message):
         iface.messageBar().pushMessage("Informacja", message, level=Qgis.Info)
 
     def on_radio_button_height_toggled(self):
         if self.height_radioButton.isChecked():
             self.area_radioButton.setChecked(False)
-            
+            self.checkBox_poligon.setHidden(True) 
+            self.checkBox_poligon.setChecked(False)
+            self.comboBox_jednostki.setHidden(True)
+
     def on_radio_button_area_toggled(self):
         if self.area_radioButton.isChecked():
             self.height_radioButton.setChecked(False)
+            self.checkBox_poligon.setEnabled(True)
+            self.checkBox_poligon.setHidden(False)
+            self.comboBox_jednostki.setHidden(False)
 
     def on_calculate_button_clicked(self):
         if self.height_radioButton.isChecked():
             self.get_height_between_two_points()
         elif self.area_radioButton.isChecked():
             self.get_area_between_points()
-            self.creating_polygon()
+            if self.checkBox_poligon.isChecked():
+                self.creating_polygon()
             
     def get_height_between_two_points(self):
         layer = self.layer_MapLayer.currentLayer()
         selected_features = layer.selectedFeatures()
-
         if len(selected_features) == 2:
             list_with_height = []
             features_id = []
@@ -98,7 +121,6 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
     def get_area_between_points(self):
         layer_area = self.layer_MapLayer.currentLayer()
         selected_features_area = layer_area.selectedFeatures()
-
         if len(selected_features_area) >= 3:
             list_xy_coordinates = []
             area_features_id = []
@@ -124,13 +146,18 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
                     prepared_y = list_xy_coordinates[number][1] - list_xy_coordinates[number - 1][1]
                     result = prepared_x * prepared_y
                     results.append(result)
+            if self.comboBox_jednostki.currentText() == "m2":
+                final_area = abs(sum(results) / 2)
+            elif self.comboBox_jednostki.currentText() == "a":
+                final_area = abs(sum(results) / 2)/100
+            elif self.comboBox_jednostki.currentText() == "ha":
+                final_area = abs(sum(results) / 2)/10000
 
-            final_area = abs(sum(results) / 2)
-            result_area = f"{final_area:.3f} m2"
+            result_area = f"{final_area:.3f}"
             self.result_label.setText(str(result_area))
             self.errors_label.setText("")
             self.final_area = final_area
-            self.display_message(f"Pole powierzchni figury o wierzchołkach w punktach o numerach: {area_features_id} wynosi: {final_area} [m^2]")
+            self.display_message(f"Pole powierzchni figury o wierzchołkach w punktach o numerach: {area_features_id} wynosi: {final_area} {self.comboBox_jednostki.currentText()}")
         else:
             error = "The selected number of points is incorrect. You should choose more than 2 points. "
             self.errors_label.setText(str(error))
@@ -175,3 +202,78 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             canvas.setLayers([layer1])
             canvas.zoomToFullExtent()
             canvas.show()
+
+    def setHiddenFalse(self):
+        self.groupBox_choose_zone.setHidden(False)
+
+    def setHiddenTrue(self):
+        self.checkBox_zone_5.setChecked(False)
+        self.checkBox_zone_6.setChecked(False)
+        self.checkBox_zone_7.setChecked(False)
+        self.checkBox_zone_8.setChecked(False)
+        self.groupBox_choose_zone.setHidden(True)
+
+    def add_layer_with_coordinates_from_file(self):
+        file_path = self.sciezka.filePath()  # Ścieżka do pliku z danymi
+
+            # Tworzenie warstwy tymczasowej w pamięci
+        
+        EPSG = ""
+
+        if self.radioButton_1992.isChecked():
+            EPSG = "Point?crs=EPSG:2180"
+        elif self.radioButton_2000.isChecked():
+            if self.checkBox_zone_5.isChecked():
+                EPSG = "Point?crs=EPSG:2176"
+            elif self.checkBox_zone_6.isChecked():
+                EPSG = "Point?crs=EPSG:2177"
+            elif self.checkBox_zone_7.isChecked():
+                EPSG = "Point?crs=EPSG:2178"
+            elif self.checkBox_zone_8.isChecked():
+                EPSG = "Point?crs=EPSG:2179"
+
+        warstwa = QgsVectorLayer(EPSG, "Warstwa punktowa", "memory")
+        provider = warstwa.dataProvider()
+
+        # Dodawanie pól do warstwy
+        provider.addAttributes([QgsField("x", QVariant.Double)])
+        provider.addAttributes([QgsField("y", QVariant.Double)])
+        provider.addAttributes([QgsField("z", QVariant.Double)])
+        warstwa.updateFields()
+
+        # Otwieranie pliku i odczytywanie wartości
+        with open(file_path, 'r') as file:
+            for line in file:
+                # Przetwarzanie linii i pobieranie wartości
+                line = line.strip()
+                values = line.split(";")
+                x = float(values[0])
+                y = float(values[1])
+                z = float(values[2])
+
+                # Tworzenie geometrii punktu
+                punkt = QgsPointXY(x, y)
+                geometria = QgsGeometry.fromPointXY(punkt)
+
+                # Tworzenie nowej funkcji z geometrią i wartościami
+                funkcja = QgsFeature()
+                funkcja.setGeometry(geometria)
+                funkcja.setAttributes([x, y, z])
+
+                # Dodawanie funkcji do warstwy
+                provider.addFeatures([funkcja])
+
+        # Aktualizowanie zakresu warstwy
+        warstwa.updateExtents()
+
+        # Dodawanie warstwy do projektu
+        QgsProject.instance().addMapLayer(warstwa)
+
+        # Odświeżanie widoku mapy
+        iface.mapCanvas().refresh()
+
+    def claer(self):
+        self.result_label.setText("")
+        layer = self.layer_MapLayer.currentLayer()
+        if layer is not None:
+            layer.removeSelection()
