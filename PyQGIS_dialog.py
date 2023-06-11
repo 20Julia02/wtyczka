@@ -31,6 +31,8 @@ from qgis.PyQt.QtCore import QVariant
 from qgis.utils import iface
 from qgis.gui import QgsMapCanvas
 from PyQt5.QtWidgets import QButtonGroup
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsView
+from PyQt5.QtGui import QPixmap
 
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
@@ -98,7 +100,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             self.get_area_between_points()
             if self.checkBox_poligon.isChecked():
                 self.creating_polygon()
-            
+
     def get_height_between_two_points(self):
         layer = self.layer_MapLayer.currentLayer()
         selected_features = layer.selectedFeatures()
@@ -235,7 +237,9 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             elif self.checkBox_zone_8.isChecked():
                 EPSG = "Point?crs=EPSG:2179"
 
-        warstwa = QgsVectorLayer(EPSG, "Warstwa punktowa", "memory")
+        nazwa_warstwa = self.newlayer_lineEdit.text()
+
+        warstwa = QgsVectorLayer(EPSG, nazwa_warstwa, "memory")
         provider = warstwa.dataProvider()
 
         # Dodawanie pól do warstwy
