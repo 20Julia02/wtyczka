@@ -53,6 +53,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
 
         self.checkBox_poligon.setHidden(True)
         self.groupBox_choose_zone.setHidden(True)
+        self.label.setVisible(False)
         
         self.button_group = QtWidgets.QButtonGroup()
         self.button_group.addButton(self.height_radioButton)
@@ -210,6 +211,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
 
     def setHiddenFalse(self):
         self.groupBox_choose_zone.setHidden(False)
+        self.label.setHidden(False)
 
     def setHiddenTrue(self):
         self.checkBox_zone_5.setChecked(False)
@@ -217,6 +219,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         self.checkBox_zone_7.setChecked(False)
         self.checkBox_zone_8.setChecked(False)
         self.groupBox_choose_zone.setHidden(True)
+        self.label.setHidden(True)
 
     def add_layer_with_coordinates_from_file(self):
         file_path = self.sciezka.filePath()  # Ścieżka do pliku z danymi
@@ -228,6 +231,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         if self.radioButton_1992.isChecked():
             EPSG = "Point?crs=EPSG:2180"
         elif self.radioButton_2000.isChecked():
+            self.label.setVisible(True)
             if self.checkBox_zone_5.isChecked():
                 EPSG = "Point?crs=EPSG:2176"
             elif self.checkBox_zone_6.isChecked():
