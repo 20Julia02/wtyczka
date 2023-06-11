@@ -120,7 +120,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             self.errors_label.setText("")
             self.display_message(f"Różnica wysokości między punktami o numerach {features_id[0]},{features_id[1]} wynosi: {height_difference} [m]")
         else:
-            self.errors_label.setText("The selected number of points is incorrect. You should choose 2 points.")
+            self.errors_label.setText("Niepoprawna ilość wybranych punktów. Wybierz 2 punkty.")
             self.result_label.setText("")
             
     def get_area_between_points(self):
@@ -164,7 +164,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
             self.final_area = final_area
             self.display_message(f"Pole powierzchni figury o wierzchołkach w punktach o numerach: {area_features_id} wynosi: {final_area} {self.comboBox_jednostki.currentText()}")
         else:
-            error = "The selected number of points is incorrect. You should choose more than 2 points. "
+            error = "Niepoprawna ilość wybranych punktów. Wybierz więcej niż 2 punkty"
             self.errors_label.setText(str(error))
             self.result_label.setText("")
 
