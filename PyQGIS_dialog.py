@@ -23,6 +23,7 @@
 """
 
 import os
+from unittest import result
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import Qt
 from qgis.PyQt import uic, QtWidgets
@@ -33,6 +34,9 @@ from qgis.gui import QgsMapCanvas
 from PyQt5.QtWidgets import QButtonGroup
 from PyQt5.QtWidgets import QGraphicsScene, QGraphicsView
 from PyQt5.QtGui import QPixmap
+import math as math
+from qgis.core import QgsPoint
+import numpy as np 
 
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
@@ -128,87 +132,63 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         layer_area = self.layer_MapLayer.currentLayer()
         selected_features_area = layer_area.selectedFeatures()
         if len(selected_features_area) >= 3:
-            list_xy_coordinates = []
-            area_features_id = []
+    
+            points = [feature.geometry().asPoint() for feature in selected_features_area]
+            centroid = QgsPoint(sum(point.x() for point in points) / len(points),
+                            sum(point.y() for point in points) / len(points))
+            points.sort(key=lambda point: -math.atan2(point.y() - centroid.y(), point.x() - centroid.x()))
+            results = 0.5 * np.abs(
+            sum(points[i - 1].x() * points[i].y() - points[i].x() * points[i - 1].y() for i in range(len(points))))
+
+            area_features_id= []
 
             for feature in selected_features_area:
-                point_attributes = feature.attributes()
-                x_coordinate = point_attributes[0]
-                y_coordinate = point_attributes[1]
                 feature_id = feature.id()
                 area_features_id.append(feature_id)
-                list_xy_coordinates.append([x_coordinate, y_coordinate])
-
-            results = []
-
-            for number in range(1, len(list_xy_coordinates) + 1):
-                if number == len(list_xy_coordinates):
-                    prepared_x = list_xy_coordinates[0][0] + list_xy_coordinates[-1][0]
-                    prepared_y = list_xy_coordinates[0][1] - list_xy_coordinates[-1][1]
-                    result = prepared_x * prepared_y
-                    results.append(result)
-                else:
-                    prepared_x = list_xy_coordinates[number][0] + list_xy_coordinates[number - 1][0]
-                    prepared_y = list_xy_coordinates[number][1] - list_xy_coordinates[number - 1][1]
-                    result = prepared_x * prepared_y
-                    results.append(result)
+                
             if self.comboBox_jednostki.currentText() == "m2":
-                final_area = abs(sum(results) / 2)
+                results = results
             elif self.comboBox_jednostki.currentText() == "a":
-                final_area = abs(sum(results) / 2)/100
+                results = results/100
             elif self.comboBox_jednostki.currentText() == "ha":
-                final_area = abs(sum(results) / 2)/10000
+                results = results/10000
 
-            result_area = f"{final_area:.3f}"
+            result_area = f"{results:.3f}"
             self.result_label.setText(str(result_area))
             self.errors_label.setText("")
-            self.final_area = final_area
-            self.display_message(f"Pole powierzchni figury o wierzchołkach w punktach o numerach: {area_features_id} wynosi: {final_area} {self.comboBox_jednostki.currentText()}")
+            self.final_area = results
+            self.display_message(f"Pole powierzchni figury o wierzchołkach w punktach o numerach: {area_features_id} wynosi: {results} {self.comboBox_jednostki.currentText()}")
         else:
             error = "Niepoprawna ilość wybranych punktów. Wybierz więcej niż 2 punkty"
             self.errors_label.setText(str(error))
             self.result_label.setText("")
 
     def creating_polygon(self):
+        canvas = iface.mapCanvas()
         layer = self.layer_MapLayer.currentLayer()
-        selected_features2 = layer.selectedFeatures()
-        
-        if len(selected_features2) >= 3:
-            list_xy_coordinates_poli = []
-
-            for feature in selected_features2:
-                point_attributes = feature.attributes()
-                x_coordinate_poli = point_attributes[0]
-                y_coordinate_poli = point_attributes[1]
-                list_xy_coordinates_poli.append([x_coordinate_poli, y_coordinate_poli])
-
-            polygon_points = [QgsPointXY(x, y) for x, y in list_xy_coordinates_poli]
-            polygon_geometry = QgsGeometry.fromPolygonXY([polygon_points])
-
-            crs = QgsProject.instance().crs().authid()
-            layer1 = QgsVectorLayer("Polygon?crs=" + crs, "Polygon", "memory")
-            provider = layer1.dataProvider()
-
-            # Dodaj atrybut 'area' do definicji pól warstwy
-            provider.addAttributes([QgsField('area', QVariant.Double)])
-
-            layer1.updateFields()  # Zaktualizuj pola warstwy
-
-            feature = QgsFeature()
-            feature.setGeometry(polygon_geometry)
-            feature.setAttributes([self.final_area])  # Ustaw wartość atrybutu 'area'
-
-            provider.addFeature(feature)  # Dodaj obiekt feature do warstwy
-            layer1.updateExtents()
-
-            QgsProject.instance().addMapLayer(layer1)
-
-            canvas = QgsMapCanvas()
-            canvas.setCanvasColor(Qt.white)
-            canvas.setLayers([layer1])
-            canvas.zoomToFullExtent()
-            canvas.show()
-
+        crs = layer.crs()
+        crs_authid = crs.authid() if crs else ''
+        selected_features = layer.selectedFeatures()
+        if len(selected_features) < 3:
+            iface.messageBar().pushMessage("Błąd",
+                                           "Wybierz co najmniej 3 punkty do narysowania poligonu.",
+                                           level=Qgis.Warning)
+            return
+        points = [feature.geometry().asPoint() for feature in selected_features]
+        centroid = QgsPoint(sum(point.x() for point in points) / len(points),
+                            sum(point.y() for point in points) / len(points))
+        points.sort(key=lambda point: -math.atan2(point.y() - centroid.y(), point.x() - centroid.x()))
+        new_layer = QgsVectorLayer("Polygon?crs=" + crs_authid, "Poligon", "memory")
+        provider = new_layer.dataProvider()
+        new_layer.startEditing()
+        poly_feature = QgsFeature()
+        polygon = QgsGeometry.fromPolygonXY([points])
+        poly_feature.setGeometry(polygon)
+        provider.addFeature(poly_feature)
+        new_layer.commitChanges()
+        QgsProject.instance().addMapLayer(new_layer)
+        canvas.refresh()
+       
     def setHiddenFalse(self):
         self.groupBox_choose_zone.setHidden(False)
         self.label.setHidden(False)
@@ -288,3 +268,8 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         layer = self.layer_MapLayer.currentLayer()
         if layer is not None:
             layer.removeSelection()
+
+
+
+
+ 
