@@ -123,7 +123,8 @@ Do pamięci podręcznej aplikacji wgrane zostaną współrzędne (wartości wsp�
 -  PL-2000 strefa 5 (EPSG:2176) 
 -  PL-2000 strefa 6 (EPSG:2177) 
 -  PL-2000 strefa 7 (EPSG:2178) 
--  PL-2000 strefa 8 (EPSG:2179)\\
+-  PL-2000 strefa 8 (EPSG:2179)
+\\
 
 Wygląd okna wtyczki przy wgrywaniu pliku ze współrzędnymi w układzie PL-2000 w strefie 6. Punkty z wgrywanego pliku będą należeć do warstwy o nazwie "pl_2000_6" i wstawią się w układzie EPSG: 2177 :
 
