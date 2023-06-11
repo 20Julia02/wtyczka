@@ -128,8 +128,3 @@ Do pamięci podręcznej aplikacji wgrane zostaną współrzędne (wartości wsp�
 Wygląd okna wtyczki przy wgrywaniu pliku ze współrzędnymi w układzie PL-2000 w strefie 6. Punkty z wgrywanego pliku będą należeć do warstwy o nazwie "pl_2000_6" i wstawią się w układzie EPSG: 2177 :
 
 <img src="zdj_md/wtyczka_wgrany.PNG"  width="40%" height="40%">
-
-## Nieprawidłowe działanie programu
-
-W niektórych przypadkach program niepoprawnie oblicza pole powierzchni metodą Gaussa
-
