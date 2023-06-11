@@ -1,27 +1,33 @@
 # Wtyczka QGIS
 ## Opis
-Wtyczka została stworzona w celu obliczania wysokości pomiędzy dwoma punktami oraz pola powierzchni pomiędzy punktami. Została w niej dodana możliwość wgrywania plików txt lub csv do odpowiednich układów współrzędnych. Wtyczka umożliwia również przeliczanie pola powierzchni w różnych jednostakch powierzchni oraz narysowanie poligonu na warstwie tymczasowej.
+Wtyczka do programu QGIS została stworzona w celu obliczania różnicy wysokości oraz pola powierzchni pomiędzy wskazanymi przez użytkownika punktami. Umożliwia także wgrywanie plików ze współrzędnymi w formacie txt lub csv. Funkcje wtyczki zostały podzielone na 2 odrębne zakładki: 
+- związane z obliczeniami
+- związane z wgrywaniem pliku
 
-**Funkcjonalność wtyczki**
+## Funkcjonalność wtyczki
+**Zakładka 1. Wysokość i pole powierzchni**
 ```mermaid
   graph TD;
-      A[Funkcjonalnościwtyczki]-->B[obliczenie różnicy wysokości];
-      A --> C[podanie na pasku informacyjnym tekstu wynikowego]
-      A --> D[obliczenie pole powierzchni]
-      D --> E[Podanie wyniku w różnych jednostkach]
-      D --> F[Możliwość narysowania poliognu] 
+      A[Wysokość i pole powierzchni]-->B[obliczenie różnicy wysokości];
+      A --> C[obliczenie pola powierzchni]
+      C --> E[podanie wyniku w różnych jednostkach]
+      C --> F[rysowanie poliognu] 
+      A --> D[podanie na pasku informacyjnym tekstu wynikowego]
 ```
-\
-\
-\
+**Zakładka 2. Wgraj plik**
+
 ```mermaid
   graph TD;
-      A[Funkcjonalności wtyczki]--> B[Wskazanie układu współrzędncyh dla wgrywanego pliku]
-      B --> D[Dodanie warstwy tymczasowej z danymi z pliku]
-      D --> C[Dodanie atrybutu area dla utworzonej warstwy] 
+      A[Wgraj plik]--> B[wgranie pliku ze współrzędnymi]
+      B --> C[wskazanie układu współrzędncyh dla wgrywanego pliku]
+      A --> D[Dodanie warstwy tymczasowej z danymi z pliku]
+      D --> E[Dodanie atrybutu area dla utworzonej warstwy] 
+      
 ```
+## Opis funkcji dla poszczególnych zakładek
+**Zakładka 1. Wysokość i pole powierzchni**
 
-–wybór dwóch punktów z aktywnej warstwy oraz obliczenie różnicy wysokości\
+– wybór dwóch punktów z aktywnej warstwy oraz obliczenie różnicy wysokości\
 –podanie na pasku informacyjnym interfejsu QGIS tekstu wynikowego\
 –wybór minimum trzech punktów z warstwy\
 –obliczenie pole powierzchni na podstawie współrzędnych zaznaczonychpunktów metodą Gaussa\
