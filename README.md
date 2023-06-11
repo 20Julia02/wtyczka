@@ -64,7 +64,7 @@ Efekt wyznaczania różnicy wysokości:
 -  wybrać w oknie wtyczki, w polu "Wybierz warstwę" warstwę, w której znajdują się zaznaczone wcześniej punkty
 -  w polu "Oblicz" wybrać "Powierzchnia" (pojawi się opcja "Narysuj poligon", a w polu "Wynik" wybór jednostki wyświetlanego wyniku)
 -  w polu "Wynik" wybrać jednostkę, wybierając spośród "m2", "a" lub "ha"
--  w polu "Oblicz" można wybrać opcję "Narysuj poligon". Należy wówczas pamiętać, że układ współrzędnych bieżącego projektu w QGIS musi być zgodny z układem współrzędnych, do którego należą zaznaczone punkty
+-  w polu "Oblicz" można wybrać opcję "Narysuj poligon".
 -  Wcisnąć przycisk "Oblicz"
 
 **Wynik** 
