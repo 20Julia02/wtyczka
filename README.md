@@ -79,7 +79,7 @@ Efekt wyznaczania pola powierzchni wraz z rysowaniem poligonu:
 
 Punkty są sortowane względem kąta pomiędzy wektorem od środka figury (obliczanym jako średnia arytmetyczna współrzędnych wybranych punktów) do punktu i osią x. W efekcie powstanie poniższa figura:
 
-<img src="zdj_md/poligon.PNG"  width="30%" height="30%">
+<img src="zdj_md/poligon.png"  width="30%" height="30%">
 
 **By wyczyścić konsolę wynikową i zaznaczenie obiektów należy:**
 - wybrać w oknie wtyczki, w polu "Wybierz warstwę" warstwę, w której znajdują się zaznaczone punkty
