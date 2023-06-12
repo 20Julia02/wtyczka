@@ -171,8 +171,8 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         selected_features = layer.selectedFeatures()
         if len(selected_features) < 3:
             iface.messageBar().pushMessage("Błąd",
-                                           "Wybierz co najmniej 3 punkty do narysowania poligonu.",
-                                           level=Qgis.Warning)
+                                        "Wybierz co najmniej 3 punkty do narysowania poligonu.",
+                                        level=Qgis.Warning)
             return
         points = [feature.geometry().asPoint() for feature in selected_features]
         centroid = QgsPoint(sum(point.x() for point in points) / len(points),
@@ -180,15 +180,28 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         points.sort(key=lambda point: -math.atan2(point.y() - centroid.y(), point.x() - centroid.x()))
         new_layer = QgsVectorLayer("Polygon?crs=" + crs_authid, "Poligon", "memory")
         provider = new_layer.dataProvider()
+        provider.addAttributes([QgsField('area', QVariant.Double)])  # Add the 'area' attribute
         new_layer.startEditing()
         poly_feature = QgsFeature()
         polygon = QgsGeometry.fromPolygonXY([points])
         poly_feature.setGeometry(polygon)
-        provider.addFeature(poly_feature)
         new_layer.commitChanges()
         QgsProject.instance().addMapLayer(new_layer)
         canvas.refresh()
-       
+
+        polygon = QgsGeometry.fromPolygonXY([points])
+        feature = QgsFeature()
+        feature.setGeometry(polygon)
+
+        if self.final_area != "":
+            area_value = float(self.final_area)
+            feature.setAttributes([area_value])
+
+        provider.addFeatures([feature])
+        new_layer.updateExtents()
+        QgsProject.instance().addMapLayer(new_layer)
+
+
     def setHiddenFalse(self):
         self.groupBox_choose_zone.setHidden(False)
         self.label.setHidden(False)
@@ -268,8 +281,3 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         layer = self.layer_MapLayer.currentLayer()
         if layer is not None:
             layer.removeSelection()
-
-
-
-
- 
