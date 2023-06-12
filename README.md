@@ -4,39 +4,6 @@ Wtyczka do programu QGIS została stworzona w celu obliczania różnicy wysokoś
 - związane z obliczeniami (zakładka 1. Wysokość i pole powierzchni)
 - związane z wgrywaniem pliku (zakładka 2. Wgraj plik)
 
-## Funkcjonalność wtyczki
-**Zakładka 1. Wysokość i pole powierzchni**
-
-<br>
-<br>
-
-```mermaid
-  graph TD;
-      A[Wysokość i pole powierzchni]-->B[obliczenie różnicy wysokości];
-      A --> C[obliczenie pola powierzchni]
-      C --> E[podanie wyniku w różnych jednostkach]
-      C --> F[rysowanie poliognu] 
-      A --> D[podanie na pasku informacyjnym tekstu wynikowego]
-```
-<br>
-<br>
-
-**Zakładka 2. Wgraj plik**
-
-<br>
-<br>
-
-```mermaid
-  graph TD;
-      A[Wgraj plik]--> B[wgranie pliku ze współrzędnymi]
-      B --> C[wskazanie układu współrzędncyh dla wgrywanego pliku]
-      A --> D[Dodanie warstwy tymczasowej z danymi z pliku]
-      D --> E[Dodanie atrybutu area dla utworzonej warstwy] 
-      
-```
-<br>
-<br>
-
 ## Opis funkcji w poszczególnych zakładkach
 ### Zakładka 1. Wysokość i pole powierzchni
 
