@@ -75,6 +75,12 @@ Efekt wyznaczania pola powierzchni wraz z rysowaniem poligonu:
 
 <img src="zdj_md/wtyczka_pow.PNG"  width="80%" height="80%">
 
+**Sposób obliczania pola powierzchni i rysowania poligonu**
+
+Punkty są sortowane względem kąta pomiędzy wektorem od środka figury (obliczanym jako średnia arytmetyczna współrzędnych wybranych punktów) do punktu i osią x. W efekcie powstanie poniższa figura:
+
+<img src="zdj_md/poligon.PNG"  width="30%" height="30%">
+
 **By wyczyścić konsolę wynikową i zaznaczenie obiektów należy:**
 - wybrać w oknie wtyczki, w polu "Wybierz warstwę" warstwę, w której znajdują się zaznaczone punkty
 - Wcisnąć przycisk "Wyczyść" 
@@ -112,7 +118,7 @@ Współrzędne (X, Y, Z) we wstawianym pliku muszą mieć część dziesiętną 
 
 -  w polu "Podaj źródło pliku" wskazać ścieżkę do pliku z danymi wektorowymi do wgrania. Plik musi być w formacie .txt lub .csv
 -  w polu "Wybierz układ współrzędnych dla pliku" wybrać układ w którym znajdują się współrzędne we wgrywanym pliku. Należy wybrać między układem PL-1992 a PL-2000 (po wyborze układu PL-2000 pojawi się pole "strefy" oraz zdjęcie z zasięgiem poszczególnych stref)
--  W przypadku wyboru układu PL-2000 wybrać strefę, w którym znajdują się wstawiane punkty, wybierając spośród: "5", "6", "7" i "8"
+-  W przypadku wyboru układu PL-2000 wybrać strefę, w której znajdują się wstawiane punkty, wybierając spośród: "5", "6", "7" i "8"
 -  W polu "Zdefiniuj nazwę warstwy" wpisać nazwę warstwy, do której po wstawieniu będą należeć punkty o współrzędnych zdefiniowanych w pliku
 -  Wcisnąć przycisk "Dodaj warstwę"
 
@@ -124,8 +130,7 @@ Do pamięci podręcznej aplikacji wgrane zostaną współrzędne (wartości wsp�
 -  PL-2000 strefa 6 (EPSG:2177) 
 -  PL-2000 strefa 7 (EPSG:2178) 
 -  PL-2000 strefa 8 (EPSG:2179)
-\\
 
-Wygląd okna wtyczki przy wgrywaniu pliku ze współrzędnymi w układzie PL-2000 w strefie 6. Punkty z wgrywanego pliku będą należeć do warstwy o nazwie "pl_2000_6" i wstawią się w układzie EPSG: 2177 :
+Wygląd okna wtyczki przy wgrywaniu pliku ze współrzędnymi w układzie PL-2000 w strefie 6. Punkty z wgrywanego pliku będą należeć do warstwy o nazwie "pl_2000_6" i wstawią się w układzie EPSG: 2177:
 
 <img src="zdj_md/wtyczka_wgrany.PNG"  width="40%" height="40%">
