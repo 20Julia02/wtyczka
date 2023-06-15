@@ -242,7 +242,7 @@ class PyQGISDialog(QtWidgets.QDialog, FORM_CLASS):
         # Dodawanie pól do warstwy
         provider.addAttributes([QgsField("x", QVariant.Double)])
         provider.addAttributes([QgsField("y", QVariant.Double)])
-        provider.addAttributes([QgsField("z", QVariant.Double)])
+        provider.addAttributes([QgsField("h", QVariant.Double)])
         warstwa.updateFields()
 
         # Otwieranie pliku i odczytywanie wartości
