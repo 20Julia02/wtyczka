@@ -1,18 +1,35 @@
-# Wtyczka QGIS
-## Opis
+# Opis wtyczki do programu QGIS
 Wtyczka do programu QGIS została stworzona w celu obliczania różnicy wysokości oraz pola powierzchni pomiędzy wskazanymi przez użytkownika punktami. Umożliwia także rysowanie poligonu między wskazanymi punktami oraz wgrywanie plików ze współrzędnymi w formacie txt lub csv. Funkcje zostały przydzielone do 2 odrębnych zakładek w oknie wtyczki: 
 - związane z obliczeniami (zakładka 1. Wysokość i pole powierzchni)
 - związane z wgrywaniem pliku (zakładka 2. Wgraj plik)
+## Jak zainstalować wtyczkę
 
-## Opis funkcji w poszczególnych zakładkach
-### Zakładka 1. Wysokość i pole powierzchni
+Należy pobrać wszystkie pliki z repozytorium do folderu znajdującego się w folderze "plugins", w którym przechowywane są wtyczki do programu QGIS.
+
+**Przykładowe ścieżki do folderu "plugins":**
+- na komputerze z systemem Windows:
+C:\Users\\<nazwa_użytkownika>\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\pyqgis
+
+- na komputerze z systemem MacOS:
+/Users/<nazwa_użytkownika>/Library/Application\ Support/QGIS/QGIS3/profiles/default/python/plugins
+
+Należy pamiętać, że powyższe ścieżki są przykładowe i mogą różnić się w zależności od konkretnej konfiguracji systemu operacyjnego i zainstalowanej wersji QGIS.
+
+
+
+# Opis funkcji w poszczególnych zakładkach
+## Zakładka 1. Wysokość i pole powierzchni
+
+## Warunek poprawnego działania wtyczki
+
+ Należy pamiętać, że do poprawnego działania wtyczki (tj. obliczania różnic wysokości, pól powierzchni i rysowania poligonów) wszystkie punkty znajdujące się na używanej do obliczeń warstwie muszą skłądać się z dokładnie 3 współrzędnych (każdy punkt powinien mieć 3 wartości widoczne w kolejnych trzech kolumnach w tabeli atrybutów), z których pierwsze dwie traktowane będą jako współrzędne płaskie X, Y (służące do obliczania pola powierzchni i rysowania poligonu), natomiast trzecia współrzędna będzie traktowana jako wysokość (potrzebna do obliczania różnicy wysokości). Oznacza to, że we wszystkich 3 kolumnach w tabeli atrybutów punktów muszą znajdować się liczby całkowite bądź liczby zmiennoprzecinkowe z częścią dziesiętną zapisaną po kropce. 
 
 Wygląd okna po weściu w zakładkę:
 
 <img src="zdj_md/wtyczka_1.PNG"  width="40%" height="40%">
 
 **By obliczyć różnicę wysokości między punktami należy:**
--  wybrać dwa punkty z aktywnej warstwy w QGIS, używając w tym celu narzędzia "zaznacz obiekty" z panelu QGIS
+-  wybrać dokładnie dwa punkty z aktywnej warstwy w QGIS, używając w tym celu narzędzia "zaznacz obiekty" z panelu QGIS
 -  wybrać w oknie wtyczki, w polu "Wybierz warstwę" warstwę, w której znajdują się zaznaczone wcześniej punkty
 -  w polu "Oblicz" wybrać "Różnica wysokości"
 -  Wcisnąć przycisk "Oblicz"
@@ -21,9 +38,12 @@ Wygląd okna po weściu w zakładkę:
 
 Wynik pojawi się jednocześnie w polu "Wynik", a także na pasku informacyjnym interfejsu QGIS. W przypadku gdy użytkownik wybierze inną liczbę punktów niż dwa, w polu "Błędy" pojawi się informacja o nieprawidłowej liczbie wybranych punktów.
 
+**Sposób obliczania różnicy wysokości**
+
+Program jako wysokości punktów traktuje tą wartość w tabeli atrybutów, która znajduje się w trzeciej kolumnie. Następnie oblicza różnicę wysokości pomiędzy nimi, wyświetlając wynik w wartości bezwzględnej.
+
 Efekt wyznaczania różnicy wysokości:
 <img src="zdj_md/wtyczka_wys.PNG"  width="80%" height="80%">
-
 
 **By obliczyć pole powierzchni należy:**
 
@@ -44,11 +64,12 @@ Efekt wyznaczania pola powierzchni wraz z rysowaniem poligonu:
 
 **Sposób obliczania pola powierzchni i rysowania poligonu**
 
-Punkty są sortowane względem kąta pomiędzy wektorem od środka figury (obliczanym jako średnia arytmetyczna współrzędnych wybranych punktów) do punktu i osią x. W efekcie powstanie poniższa figura:
+Punkty (tj. ich współrzędne poziome X i Y) są sortowane względem kąta pomiędzy wektorem od środka figury (obliczanym jako średnia arytmetyczna współrzędnych X i Y wybranych punktów) do punktu i osią x. Program jako współrzędne poziome X i Y traktuje te, które znajdują się w pierwszych dwóch kolumnach w tabeli atrybutów. W efekcie powstanie poniższa figura:
 
 <img src="zdj_md/poligon.png"  width="30%" height="30%">
 
 **By wyczyścić konsolę wynikową i zaznaczenie obiektów należy:**
+
 - wybrać w oknie wtyczki, w polu "Wybierz warstwę" warstwę, w której znajdują się zaznaczone punkty
 - Wcisnąć przycisk "Wyczyść" 
   
@@ -64,7 +85,7 @@ Wygląd okna po wejściu w zakładkę:
 
 **Przykładowy wygląd pliku wgrywanego do programu**
 
-Współrzędne (X, Y, Z) we wstawianym pliku muszą mieć część dziesiętną po kropce i być oddzielone od siebie średnikami:
+Wartości współrzędnych (X, Y, h) we wstawianym pliku muszą być całkowite lub zmiennoprzecinkowe z częścią dziesiętną po kropce. Współrzędne każdego punktu powinny być umieszczane w kolejnych wierszach pliku, a ich poszczególne składowe (X, Y i h) muszą być oddzielone od siebie średnikami. Pierwsze dwie współrzędne w każdym wierszu są współrzędnymi płaskimi w układzie PL-1992 lub w jednej z 4 stref układu PL-20000, trzecia współrzędna jest wysokością punktu. Należy pamiętać o wpisaniu dokładnie 3 współrzędnych dla każdego punktu (w każdym wierszu trzy wartości oddzielone średnikami). Plik powinien wyglądać jak poniżej:
 
 ```bash
 5540883.974;7501304.251;100.125
@@ -91,12 +112,14 @@ Współrzędne (X, Y, Z) we wstawianym pliku muszą mieć część dziesiętną 
 
 **Wynik**
 
-Do pamięci podręcznej aplikacji wgrane zostaną współrzędne (wartości współrzędnych poszczególnych punktów będą widoczne w tabeli atrybutów). Do bieżącego projektu wgrana zostanie warstwa tymczasowa o zdefiniowanej przez użytkownika nazwie, w wybranym przez niego układzie odniesienia EPSG (jednym z poniższych):
+Do pamięci podręcznej aplikacji wgrane zostaną współrzędne, a do bieżącego projektu dodana zostanie warstwa tymczasowa o zdefiniowanej przez użytkownika nazwie, w wybranym przez niego układzie odniesienia EPSG (jednym z poniższych):
 -  PL-1992 (EPSG:2180) 
 -  PL-2000 strefa 5 (EPSG:2176) 
 -  PL-2000 strefa 6 (EPSG:2177) 
 -  PL-2000 strefa 7 (EPSG:2178) 
 -  PL-2000 strefa 8 (EPSG:2179)
+
+Wartości współrzędnych X, Y i h poszczególnych punktów będą widoczne w trzech kolejnych kolumnach tabeli atrybutów dodanej warstwy.
 
 Wygląd okna wtyczki przy wgrywaniu pliku ze współrzędnymi w układzie PL-2000 w strefie 6. Punkty z wgrywanego pliku będą należeć do warstwy o nazwie "pl_2000_6" i wstawią się w układzie EPSG: 2177:
 
