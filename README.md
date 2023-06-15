@@ -8,9 +8,11 @@ Należy pobrać wszystkie pliki z repozytorium do folderu znajdującego się w f
 
 **Przykładowe ścieżki do folderu "plugins":**
 - na komputerze z systemem Windows:
+
 C:\Users\\<nazwa_użytkownika>\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\pyqgis
 
 - na komputerze z systemem MacOS:
+
 /Users/<nazwa_użytkownika>/Library/Application\ Support/QGIS/QGIS3/profiles/default/python/plugins
 
 Należy pamiętać, że powyższe ścieżki są przykładowe i mogą różnić się w zależności od konkretnej konfiguracji systemu operacyjnego i zainstalowanej wersji QGIS.
